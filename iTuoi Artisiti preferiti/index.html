@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SoundVault — La tua musica</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght=0,400;0,700;1,400&family=DM+Mono:wght=300;400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <div class="noise-overlay"></div>
+
+  <header class="site-header">
+    <div class="logo">
+      <div class="vinyl-icon">
+        <div class="vinyl-ring"></div>
+        <div class="vinyl-center"></div>
+      </div>
+      <span class="logo-text">Sound<em>Vault</em></span>
+    </div>
+    <nav class="main-nav">
+      <button class="nav-btn active" data-section="search">Ricerca</button>
+      <button class="nav-btn" data-section="charts">Top Charts</button>
+      <button class="nav-btn" data-section="favorites">
+        Preferiti
+        <span class="fav-count" id="favCount">0</span>
+      </button>
+    </nav>
+  </header>
+
+  <main class="main-content">
+
+    <section class="section active" id="sectionSearch">
+      <div class="section-header">
+        <h2 class="section-title">Esplora</h2>
+        <p class="section-sub">Cerca artisti e canzoni dal catalogo globale</p>
+      </div>
+
+      <div class="search-bar-wrap">
+        <div class="search-bar">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input type="text" id="searchInput" class="search-input"
+            placeholder="Cerca artisti o canzoni…" autocomplete="off" />
+          <button class="search-btn" id="searchBtn">Cerca</button>
+        </div>
+        <div class="search-mode-toggle">
+          <button class="mode-btn active" data-mode="songs">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+            Canzoni
+          </button>
+          <button class="mode-btn" data-mode="artists">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Artisti
+          </button>
+        </div>
+      </div>
+
+      <div id="searchView">
+        <div id="searchResults" class="results-grid"></div>
+        <div id="searchLoader" class="loader hidden">
+          <div class="spinner"></div><span>Ricerca in corso…</span>
+        </div>
+        <div id="searchEmpty" class="empty-state hidden">
+          <p>Nessun risultato trovato. Prova con un altro termine.</p>
+        </div>
+        <div id="searchPlaceholder" class="search-placeholder">
+          <div class="placeholder-vinyl">
+            <div class="vinyl-icon large"><div class="vinyl-ring"></div><div class="vinyl-center"></div></div>
+          </div>
+          <p>Inizia cercando un artista o una canzone</p>
+        </div>
+      </div>
+
+      <div id="artistDetailView" class="hidden">
+        <button class="back-btn" id="backBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+            <path d="M19 12H5M5 12l7-7M5 12l7 7"/>
+          </svg>
+          Torna ai risultati
+        </button>
+        <div id="artistHero"></div>
+        <div id="artistTracksSection"></div>
+        <div id="artistAlbumsSection"></div>
+        <div id="artistDetailLoader" class="loader hidden">
+          <div class="spinner"></div><span>Caricamento artista…</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section hidden" id="sectionCharts">
+      <div class="section-header">
+        <h2 class="section-title">Top Charts</h2>
+        <p class="section-sub">Le 25 canzoni più ascoltate nel mondo in questo momento</p>
+      </div>
+      <div id="chartsResults" class="results-grid"></div>
+      <div id="chartsLoader" class="loader hidden">
+        <div class="spinner"></div><span>Caricamento charts…</span>
+      </div>
+    </section>
+
+    <section class="section hidden" id="sectionFavorites">
+      <div class="section-header">
+        <h2 class="section-title">I tuoi Preferiti</h2>
+        <p class="section-sub">Salvati in locale — disponibili anche al prossimo avvio</p>
+      </div>
+
+      <div class="fav-tabs">
+        <button class="fav-tab active" data-favtab="songs">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+          Canzoni
+          <span class="tab-count" id="songFavCount">0</span>
+        </button>
+        <button class="fav-tab" data-favtab="artists">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Artisti
+          <span class="tab-count" id="artistFavCount">0</span>
+        </button>
+      </div>
+
+      <div id="favSongsView">
+        <div id="favSongsGrid" class="results-grid"></div>
+        <div id="favSongsEmpty" class="empty-state hidden">
+          <div class="placeholder-vinyl">
+            <div class="vinyl-icon large"><div class="vinyl-ring"></div><div class="vinyl-center"></div></div>
+          </div>
+          <p>Nessuna canzone preferita ancora.<br>Premi ❤ su una canzone!</p>
+        </div>
+      </div>
+
+      <div id="favArtistsView" class="hidden">
+        <div id="favArtistsGrid" class="results-grid"></div>
+        <div id="favArtistsEmpty" class="empty-state hidden">
+          <p>Nessun artista preferito ancora.<br>Premi ❤ su un artista!</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="nowPlaying" class="now-playing hidden">
+    <div class="np-art"></div>
+    <div class="np-info">
+      <div class="np-title"></div>
+      <div class="np-artist"></div>
+    </div>
+    <div class="np-progress">
+      <div class="np-bar"><div class="np-fill"></div></div>
+      <span class="np-time">0:00</span>
+    </div>
+    <button class="np-stop" id="npStop" title="Ferma">
+      <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><rect x="4" y="4" width="16" height="16" rx="2"/></svg>
+    </button>
+  </div>
+
+  <div id="toast" class="toast"></div>
+  <script src="app.js"></script>
+</body>
+</html>
